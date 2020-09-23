@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+	<title th:text="${web.wname}"></title>
+	<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+	<link th:href="@{~/font/font-awesome.min.css}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" th:href="@{~/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{~/css/style.css}">
+</head>
+<body>
+	<div id="site-content">
+		<header th:replace="~{./navigation_bar_layout :: header}"></header>
+		<main class="main-content">	
+			<div class="container">
+				<div class="page">
+					<div class="breadcrumbs">
+						<a th:href="@{/index}">Home</a>
+					<!-- 	<span th:text="${film.fname}"></span> -->
+					</div>
+				</div>
+				<h2>Request Film Form</h2>
+				<select class="form-control" id="selectForm">
+    				<option value="0">Movie</option>
+    				<option value="1" selected="selected">TV Series</option>
+    			</select>
+    			<br><hr><br>
+				<div class="Add content form-group" id="myform">
+					<form th:action="@{/add-new-tv-series}" method="post" th:object="${newFilmRequest}" enctype="multipart/form-data">
+						<input type="text" name="requestEmail" placeholder="Email to contact" class="form-control" id="requestEmail"><br>
+						<input type="text" name="fname" placeholder="Film name" class="form-control" required="required"/><br>
+						
+						<div id="urlPlace">
+							<input type="text" placeholder="Episode 1 url" id="urlRaw1" class="form-control" required="required"/><br>
+    						<input type="hidden" name="listFilmUrl" id="url1"/>
+    					</div>
+    					<input type="hidden" value="2" id="urlIndex">
+    					<div class="btn btn-info" id="btnAddUrl">
+         					 <span class="glyphicon glyphicon-plus"></span> + 
+       					</div>
+       					<div class="btn btn-danger" id="btnDeleteUrl">
+         					 <span class="glyphicon glyphicon-plus"></span> - 
+       					</div>
+       					<br><br>
+    					<input type="text" name="introduction" placeholder="Introduction" class="form-control" required="required"/><br>
+    					<input type="text" name="length" placeholder="Length" class="form-control" required="required"/><br>
+    					<input type="text" name="fepisodecount" placeholder="Episode count" class="form-control" required="required"/><br>
+    					<input type="text" name="fyear" placeholder="Year" class="form-control" required="required"/><br>
+    					<br>
+    					<select th:field="*{country_id}" class="form-control" required="required">
+                         	<option value=""> Chosen Country </option>
+                         	<option th:each="country : ${listCountry}"
+                                 th:value="${country.coid}"
+                                 th:utext="${country.coname}">
+                         	</option>
+                  		</select>
+                  		
+                  		<div class="form-check">
+                  			<div th:each="category : ${listCatagory}" >
+                  				<input type="checkbox" th:value="${category.cid}" th:text="${category.cname}" name="list_category_id" class="form-check-input">
+    						</div>
+    					</div>
+    					<br><br>
+    					<div>
+    						Banner: <input th:field="*{upload.fileDatas}" type="file" class="form-control"/><br />      
+         					Image: <input th:field="*{upload.fileDatas}" type="file" class="form-control"/><br />  
+         				</div>  
+         				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
+    					<button type="submit" class="btn btn-primary" id="btnCommit">Commit Film</button>
+					</form>
+				</div>
+				<h2 th:utext="${message}"></h2>
+			</div>
+		</main>
+		<footer th:replace="~{./footer_layout :: footer}"></footer>
+	</div>
+	<script th:src="@{~/js/jquery-1.11.1.min.js}"></script>
+	<script th:src="@{~/js/plugins.js}"></script>
+	<script th:src="@{~/js/app.js}"></script>
+	<script th:src="@{~/js/add_new_film_tv.js}"></script>
+</body>
+</html>
